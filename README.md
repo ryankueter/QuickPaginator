@@ -41,16 +41,14 @@ public class UsersModel : PageModel
     {
         if (ModelState.IsValid)
         {
-            var response = await _usersDataService.GetAllUsers();
+            var response = await _usersDataService.GetAllUsers().ToList();
             if (response.Response is not null && response.Response.IsSuccess())
             {
-                var result = response.Users.ToList();
-
                 // Paginator(<CurrentPageNumber>, <ResultCount>, <PageCount>)
-                Pager = new Paginator(Number, result.Count(), PageCount);
+                Pager = new Paginator(Number, response.Count(), PageCount);
 
                 // Active Users
-                ActiveUsers = result.Skip(UserPager.Skip).Take(UserPager.Take).ToList();
+                ActiveUsers = response.Skip(Pager.Skip).Take(Pager.Take).ToList();
             }
         }
     }
