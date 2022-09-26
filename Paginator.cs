@@ -126,8 +126,11 @@ public sealed class Paginator
         if (_resultsCount == 0)
             return 0;
 
-        double count = _resultsCount / _pageLimit;
-        return (int)Math.Ceiling(count);
+        if (_pageLimit == 0)
+            return 0;
+
+        var count = _resultsCount / _pageLimit;
+        return count;
     }
 
     private int GetPrevious()
