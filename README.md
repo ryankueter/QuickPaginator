@@ -19,13 +19,13 @@ using QuickPaginator;
 public class UsersModel : PageModel
 {
     private readonly IUsersDataService _usersDataService;
+	
+    [BindProperty]
+    public Paginator Pager { get; set; }
 
     [BindProperty]
     public List<User> ActiveUsers { get; set; }
 
-    [BindProperty]
-    public Paginator UserPager { get; set; }
-		
     [BindProperty(SupportsGet = true)]
     public int? Number { get; set; } = 1;
 
@@ -35,8 +35,26 @@ public class UsersModel : PageModel
     {
         _usersDataService = usersDataService;
         ActiveUsers = new();
-        UserPager = new Paginator(Number, 0, PageCount);
     }
+
+    public async Task OnGetAsync()
+    {
+        if (ModelState.IsValid)
+        {
+            var response = await _usersDataService.GetAllUsers();
+            if (response.Response is not null && response.Response.IsSuccess())
+            {
+                var result = response.Users.ToList();
+
+                // Paginator(<CurrentPageNumber>, <ResultCount>, <PageCount>)
+                Pager = new Paginator(Number, result.Count(), PageCount);
+
+                // Active Users
+                ActiveUsers = result.Skip(UserPager.Skip).Take(UserPager.Take).ToList();
+            }
+        }
+    }
+}
 ```
 
 The following is an example of how you would use the Paginator in a Razor pages application.
