@@ -47,10 +47,10 @@ public class UsersModel : PageModel
                 var result = response.Users.ToList();
 
                 // Paginator(<CurrentPageNumber>, <ResultCount>, <PageCount>)
-                UserPager = new Paginator(Number, result.Count(), PageCount);
+                Pager = new Paginator(Number, result.Count(), PageCount);
 
                 // Active Users
-                ActiveUsers = result.Skip(UserPager.Skip).Take(UserPager.Take).ToList();
+                ActiveUsers = result.Skip(Pager.Skip).Take(Pager.Take).ToList();
             }
         }
     }
@@ -61,7 +61,7 @@ The following is an example of how you would use the Paginator in a Razor pages 
 ```csharp
 <nav class="app-pagination">
 	@{
-		var pager = Model.UserPager;
+		var pager = Model.Pager;
 	}
 	<ul class="pagination justify-content-center">
 		@if (pager.PageCount <= 1)
