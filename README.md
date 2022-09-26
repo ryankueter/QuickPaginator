@@ -37,18 +37,20 @@ public class UsersModel : PageModel
         ActiveUsers = new();
     }
 
-    public async Task OnGetAsync()
+	public async Task OnGetAsync()
     {
         if (ModelState.IsValid)
         {
-            var response = await _usersDataService.GetAllUsers().ToList();
+            var response = await _usersDataService.GetAllUsers();
             if (response.Response is not null && response.Response.IsSuccess())
             {
+                var result = response.Users.ToList();
+
                 // Paginator(<CurrentPageNumber>, <ResultCount>, <PageCount>)
-                Pager = new Paginator(Number, response.Count(), PageCount);
+                UserPager = new Paginator(Number, result.Count(), PageCount);
 
                 // Active Users
-                ActiveUsers = response.Skip(Pager.Skip).Take(Pager.Take).ToList();
+                ActiveUsers = result.Skip(UserPager.Skip).Take(UserPager.Take).ToList();
             }
         }
     }
