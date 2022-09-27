@@ -114,23 +114,25 @@ public sealed class Paginator
     }
 
     private int GetPageStart()
-    { 
-        if (_currentPage > 0)
-            return (_currentPage * _pageLimit) - _pageLimit;
-
+    {
+        checked
+        {
+            if (_currentPage > 0)
+                return (_currentPage * _pageLimit) - _pageLimit;
+        }
         return 0;
     }
 
     private int GetPageCount()
     {
-        if (_resultsCount == 0)
+        if (_resultsCount == 0 || _pageLimit == 0)
             return 0;
 
-        if (_pageLimit == 0)
-            return 0;
-
-        var count = _resultsCount / _pageLimit;
-        return count;
+        checked
+        {
+            double count = (double)_resultsCount / _pageLimit;
+            return (int)Math.Ceiling(count);
+        }
     }
 
     private int GetPrevious()
@@ -148,7 +150,6 @@ public sealed class Paginator
     private Dictionary<int, string> GetBetweenPages()
     {
         Dictionary<int, string> result = new();
-
         if (PageCount > 1)
         {
             int n = 4;
@@ -168,31 +169,34 @@ public sealed class Paginator
                     break;
             }
 
-            if (_currentPage == PageCount)
-                n = 7;
-
-            if (_currentPage == PageCount - 1)
-                n = 6;
-
-            if (_currentPage == PageCount - 2)
-                n = 5;
-
-            if (_currentPage == PageCount - 3)
-                n = 4;
-
-            var i = 1;
-            for (var x = 0; x < _resultsCount; x = x + _pageLimit)
+            checked
             {
-                if (x > (_pageStart - (n * _pageLimit)) && (x < (_pageStart + (n * _pageLimit))))
+                if (_currentPage == PageCount)
+                    n = 7;
+
+                if (_currentPage == PageCount - 1)
+                    n = 6;
+
+                if (_currentPage == PageCount - 2)
+                    n = 5;
+
+                if (_currentPage == PageCount - 3)
+                    n = 4;
+
+                var i = 1;
+                for (var x = 0; x < _resultsCount; x = x + _pageLimit)
                 {
-                    var active = String.Empty;
-                    if (_pageStart == x)
+                    if (x > (_pageStart - (n * _pageLimit)) && (x < (_pageStart + (n * _pageLimit))))
                     {
-                        active = "active";
+                        var active = String.Empty;
+                        if (_pageStart == x)
+                        {
+                            active = "active";
+                        }
+                        result.Add(i, active);
                     }
-                    result.Add(i, active);
+                    i++;
                 }
-                i++;
             }
         }
         return result;
@@ -202,9 +206,12 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if ((_pageStart + _pageLimit) < _resultsCount)
+            checked
             {
-                return _currentPage + 1;
+                if ((_pageStart + _pageLimit) < _resultsCount)
+                {
+                    return _currentPage + 1;
+                }
             }
         }
         return -1;
@@ -218,18 +225,23 @@ public sealed class Paginator
     private int GetSkip()
     {
         int skip = 0;
-        if (_currentPage > 1)
-            skip = (_currentPage - 1) * _pageLimit;
-
+        checked
+        {
+            if (_currentPage > 1)
+                skip = (_currentPage - 1) * _pageLimit;
+        }
         return skip;
     }
 
     private int GetCurrentCount()
     {
-        var next = _pageStart + _pageLimit;
-        if (next < _resultsCount)
+        checked
         {
-            return next;
+            var next = _pageStart + _pageLimit;
+            if (next < _resultsCount)
+            {
+                return next;
+            }
         }
         return _resultsCount;
     }
