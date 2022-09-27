@@ -85,6 +85,13 @@ public sealed class Paginator
     /// <param name="PageLimit">The number of items per page.</param>
     public Paginator(int? CurrentPage, int ResultsCount, int PageLimit = 10)
     {
+        // Make certain the numbers are positive
+        if (CurrentPage <= 0 || ResultsCount < 0 || PageLimit <= 0)
+        {
+            BetweenPages = new();
+            throw new ArgumentOutOfRangeException();
+        }
+
         // Make some initial calcluations
         _currentPage = GetCurrentPage(CurrentPage);
         _resultsCount = ResultsCount;
@@ -125,7 +132,7 @@ public sealed class Paginator
 
     private int GetPageCount()
     {
-        if (_resultsCount == 0 || _pageLimit == 0)
+        if (_resultsCount <= 0)
             return 0;
 
         checked
