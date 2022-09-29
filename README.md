@@ -20,7 +20,6 @@ public class UsersModel : PageModel
 {
     private readonly IUsersDataService _usersDataService;
 	
-    [BindProperty]
     public Paginator Pager { get; set; }
 
     [BindProperty]
@@ -73,10 +72,10 @@ The following is an example of how you would use the Paginator in a Razor pages 
 			@if (pager.Previous is not -1)
 			{
 				<li class="page-item">
-					<a class="page-link" href="~/Admin/Users/@pager.First">First</a>
+					<a class="page-link" href="/Admin/Users/@pager.First">First</a>
 				</li>
 				<li class="page-item">
-					<a class="page-link" href="~/Admin/Users/@pager.Previous">Previous</a>
+					<a class="page-link" href="/Admin/Users/@pager.Previous">Previous</a>
 				</li>
 			}
 			else
@@ -90,15 +89,15 @@ The following is an example of how you would use the Paginator in a Razor pages 
 			}
 			@foreach (var b in pager.BetweenPages)
 			{
-				<li class="page-item @b.Value"><a class="page-link" href="~/Admin/Users/@b.Key">@b.Key</a></li>
+				<li class="page-item @b.Value"><a class="page-link" href="/Admin/Users/@b.Key">@b.Key</a></li>
 			}
 			@if (pager.Next is not -1)
 			{
 				<li class="page-item">
-					<a class="page-link" href="~/Admin/Users/@pager.Next">Next</a>
+					<a class="page-link" href="/Admin/Users/@pager.Next">Next</a>
 				</li>
 				<li class="page-item">
-					<a class="page-link" href="~/Admin/Users/@pager.Last">Last</a>
+					<a class="page-link" href="/Admin/Users/@pager.Last">Last</a>
 				</li>
 			}
 			else
