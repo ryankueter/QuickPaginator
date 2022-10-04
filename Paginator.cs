@@ -1,4 +1,6 @@
-﻿namespace QuickPaginator;
+﻿using System.Text;
+
+namespace QuickPaginator;
 
 public sealed class Paginator
 {
@@ -110,6 +112,14 @@ public sealed class Paginator
         Skip = GetSkip();
         CurrentCount = GetCurrentCount();
         TotalCount = GetTotalCount();        
+    }
+
+    public Paginator()
+    {
+        _currentPage = 1;
+        _resultsCount = 0;
+        _pageLimit = 10;
+        BetweenPages = new();
     }
 
     private int GetCurrentPage(int? CurrentPage)
