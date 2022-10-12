@@ -195,7 +195,7 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 10) >= 0)
+            if (_pageStart > 0 && (_currentPage - 10) > 0)
             {
                 return _currentPage - 10;
             }
@@ -207,7 +207,7 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 20) >= 0)
+            if (_pageStart > 0 && (_currentPage - 20) > 0)
             {
                 return _currentPage - 20;
             }
@@ -219,7 +219,7 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 50) >= 0)
+            if (_pageStart > 0 && (_currentPage - 50) > 0)
             {
                 return _currentPage - 50;
             }
@@ -231,7 +231,7 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 100) >= 0)
+            if (_pageStart > 0 && (_currentPage - 100) > 0)
             {
                 return _currentPage - 100;
             }
