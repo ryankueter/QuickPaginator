@@ -75,7 +75,7 @@ Pager.NextHundred
 ```
 
 ### Current Count & Total Count
-The current count contains the number of total items views and the total count contains the total number of items.
+The current count contains the number of total items viewed. And the total count contains the total number of items.
 
 In the following example, since we are on page ten with ten items per page, we have viewed the total number of items.
 ```csharp
