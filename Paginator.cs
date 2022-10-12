@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace QuickPaginator;
 
@@ -12,35 +13,52 @@ public sealed class Paginator
     /// <summary>
     /// First Page
     /// Example:
-    /// <a class=page-link href=~/Admin/Users/@pager.First>First</a>
+    /// <a class=page-link href=/Admin/Users/@pager.First>First</a>
     /// </summary>
     public readonly int First;
 
     /// <summary>
     /// Example:
-    /// <a class=page-link href=~/Admin/Users/@pager.Previous>Previous</a>
+    /// <a class=page-link href=/Admin/Users/@pager.Previous>Previous</a>
     /// </summary>
     public readonly int Previous;
+    public readonly int PreviousTen;
+    public readonly int PreviousTwenty;
+    public readonly int PreviousFifty;
+    public readonly int PreviousHundred;
 
     /// <summary>
     /// Example:
     /// @foreach (var b in pager.BetweenPages)
 	/// {
-	///     <li class=page-item @b.Value><a class=page-link href=~/Admin/Users/@b.Key>@b.Key</a></li>
+	///     <li class=page-item @b.Value><a class=page-link href=/Admin/Users/@b.Key>@b.Key</a></li>
 	/// }
     /// </summary>
-    public readonly Dictionary<int, string> BetweenPages;
+    public readonly Dictionary<int, string> BetweenPages = new();
 
     /// <summary>
     /// Example:
-    /// <a class=page-link href=~/Admin/Users/@pager.Next>Next</a>
+    /// @foreach (var b in pager.AllPages)
+	/// {
+	///     <li class=page-item @b.Value><a class=page-link href=/Admin/Users/@b.Key>@b.Key</a></li>
+	/// }
+    /// </summary>
+    public readonly Dictionary<int, string> AllPages = new();
+
+    /// <summary>
+    /// Example:
+    /// <a class=page-link href=/Admin/Users/@pager.Next>Next</a>
     /// </summary>
     public readonly int Next;
+    public readonly int NextTen;
+    public readonly int NextTwenty;
+    public readonly int NextFifty;
+    public readonly int NextHundred;
 
     /// <summary>
     /// Last Page
     /// Example:
-    /// <a class=page-link href=~/Admin/Users/@pager.Last>Last</a>
+    /// <a class=page-link href=/Admin/Users/@pager.Last>Last</a>
     /// </summary>
     public readonly int Last;
 
@@ -85,14 +103,11 @@ public sealed class Paginator
     /// <param name="CurrentPage">The current page, e.g., page 1.</param>
     /// <param name="ResultsCount">The number of results in the list.</param>
     /// <param name="PageLimit">The number of items per page.</param>
-    public Paginator(int? CurrentPage, int ResultsCount, int PageLimit = 10)
+    public Paginator(int? CurrentPage, int ResultsCount, int PageLimit = 10, int ButtonCount = 7)
     {
         // Make certain the numbers are positive
-        if (CurrentPage <= 0 || ResultsCount < 0 || PageLimit <= 0)
-        {
-            BetweenPages = new();
+        if (CurrentPage <= 0 || ResultsCount < 0 || PageLimit <= 0 || ButtonCount < 1)
             throw new ArgumentOutOfRangeException();
-        }
 
         // Make some initial calcluations
         _currentPage = GetCurrentPage(CurrentPage);
@@ -101,17 +116,29 @@ public sealed class Paginator
         _pageStart = GetPageStart();
         PageCount = GetPageCount();
 
+        if (CurrentPage > PageCount)
+            throw new ArgumentOutOfRangeException($"The current page '{CurrentPage}' is greater than the page count '{PageCount}.'");
+
         // Get the page numbers
         First = GetFirst();
         Previous = GetPrevious();
-        BetweenPages = GetBetweenPages();
+        PreviousTen = GetPreviousTen();
+        PreviousTwenty = GetPreviousTwenty();
+        PreviousFifty = GetPreviousFifty();
+        PreviousHundred = GetPreviousHundred();
+        BetweenPages = GetBetweenPages(ButtonCount);
+        AllPages = GetAllPages();
         Next = GetNext();
+        NextTen = GetNextTen();
+        NextTwenty = GetNextTwenty();
+        NextFifty = GetNextFifty();
+        NextHundred = GetNextHundred();
         Last = GetLast();
 
         Take = GetTake();
         Skip = GetSkip();
         CurrentCount = GetCurrentCount();
-        TotalCount = GetTotalCount();        
+        TotalCount = GetTotalCount();
     }
 
     public Paginator()
@@ -163,47 +190,99 @@ public sealed class Paginator
         }
         return -1;
     }
-    
-    private Dictionary<int, string> GetBetweenPages()
+
+    private int GetPreviousTen()
     {
-        Dictionary<int, string> result = new();
         if (PageCount > 1)
         {
-            int n = 4;
-            switch (_currentPage)
+            if (_pageStart > 0 && (_currentPage - 10) >= 0)
             {
-                case 1:
-                    n = 7;
-                    break;
-                case 2:
-                    n = 6;
-                    break;
-                case 3:
-                    n = 5;
-                    break;
-                case 4:
-                    n = 4;
-                    break;
+                return _currentPage - 10;
             }
+        }
+        return -1;
+    }
 
+    private int GetPreviousTwenty()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && (_currentPage - 20) >= 0)
+            {
+                return _currentPage - 20;
+            }
+        }
+        return -1;
+    }
+
+    private int GetPreviousFifty()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && (_currentPage - 50) >= 0)
+            {
+                return _currentPage - 50;
+            }
+        }
+        return -1;
+    }
+
+    private int GetPreviousHundred()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && (_currentPage - 100) >= 0)
+            {
+                return _currentPage - 100;
+            }
+        }
+        return -1;
+    }
+
+    private Dictionary<int, string> GetBetweenPages(int ButtonCount)
+    {
+        Dictionary<int, string> result = new();
+        if (ButtonCount < 1)
+            return result;
+
+        if (PageCount > 1)
+        {
             checked
             {
-                if (_currentPage == PageCount)
-                    n = 7;
+                // Calculate the number of buttons
+                double count = (double)ButtonCount / 2;
+                int n = (int)Math.Ceiling(count);
+                int c = ButtonCount;
 
-                if (_currentPage == PageCount - 1)
-                    n = 6;
+                for (var page = 0; page < n; page++)
+                {
+                    // Calculate the first part of the buttons
+                    if (_currentPage == page)
+                    {
+                        n = c;
+                        break;
+                    }
 
-                if (_currentPage == PageCount - 2)
-                    n = 5;
+                    // Calculate the last part of the buttons
+                    if (_currentPage == PageCount - page)
+                    {
+                        n = c;
+                        break;
+                    }
+                    c--;
+                }
 
-                if (_currentPage == PageCount - 3)
-                    n = 4;
-
+                // Add the buttons to the array
                 var i = 1;
                 for (var x = 0; x < _resultsCount; x = x + _pageLimit)
                 {
-                    if (x > (_pageStart - (n * _pageLimit)) && (x < (_pageStart + (n * _pageLimit))))
+                    bool IsTrue = false;
+                    if (ButtonCount % 2 == 0)
+                        IsTrue = (x > (_pageStart - (n * _pageLimit)) && (x <= (_pageStart + (n * _pageLimit))));
+                    else
+                        IsTrue = (x > (_pageStart - (n * _pageLimit)) && (x < (_pageStart + (n * _pageLimit))));
+
+                    if (IsTrue)
                     {
                         var active = String.Empty;
                         if (_pageStart == x)
@@ -219,6 +298,26 @@ public sealed class Paginator
         return result;
     }
 
+    private Dictionary<int, string> GetAllPages()
+    {
+        Dictionary<int, string> result = new();
+        if (PageCount > 1)
+        {
+            var i = 1;
+            for (var x = 0; x < _resultsCount; x = x + _pageLimit)
+            {
+                var active = String.Empty;
+                if (_pageStart == x)
+                {
+                    active = "active";
+                }
+                result.Add(i, active);
+                i++;
+            }
+        }
+        return result;
+    }
+
     private int GetNext()
     {
         if (PageCount > 1)
@@ -229,6 +328,54 @@ public sealed class Paginator
                 {
                     return _currentPage + 1;
                 }
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextTen()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && PageCount >= (_currentPage + 10))
+            {
+                return _currentPage + 10;
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextTwenty()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && PageCount >= (_currentPage + 20))
+            {
+                return _currentPage + 20;
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextFifty()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && PageCount >= (_currentPage + 50))
+            {
+                return _currentPage + 50;
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextHundred()
+    {
+        if (PageCount > 1)
+        {
+            if (_pageStart > 0 && PageCount >= (_currentPage + 100))
+            {
+                return _currentPage + 100;
             }
         }
         return -1;
