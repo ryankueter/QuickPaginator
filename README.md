@@ -87,7 +87,7 @@ Pager.TotalCount
 ```
 
 ### BetweenPages
-BetweenPages is a dictionary array that stores a list of buttons between the previous and next buttons. The between pages array currently only returns 7 buttons for a compact presentation. If you are on page 1 of 100 pages, you will see pages 1 - 7. If you are on page 8 of 100 pages, you will see pages 5 - 11 to keep the current page centered.
+BetweenPages is a dictionary array that stores a list of buttons between the previous and next buttons. The between pages array by default only returns 7 buttons. For example, if you are on page 1 of 100 pages, you will see pages 1 - 7. If you are on page 8 of 100 pages, you will see pages 5 - 11 to keep the current page centered.
 
 BetweenPages has a default of 7 buttons. But you can change this default by specifying the fourth parameter in the constructor. 
 
