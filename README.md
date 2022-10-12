@@ -17,13 +17,13 @@ The QuickPaginator provides a number of properties that contain calculated value
 ### Instantiation
 
 ```csharp
-// CurrentPage, ResultsCount, PageLimit (optional), ButtonCount (optional)
+// CurrentPage, ResultsCount, PageLimit (optional - default: 10), ButtonCount (optional - default: 7)
 var Pager = new Paginator(50, 1000, 10, 11);
 
-// CurrentPage, ResultsCount, PageLimit (optional)
+// CurrentPage, ResultsCount, PageLimit (optional - default: 10)
 var Pager = new Paginator(10, 100, 10);
 
-// Default page limit of 10:
+// If you want 10 per page and seven buttons:
 var Pager = new Paginator(10, 100);
 
 // Or to satisfy a nullability check:
