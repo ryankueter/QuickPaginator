@@ -184,9 +184,7 @@ public sealed class Paginator
         if (PageCount > 1)
         {
             if (_pageStart > 0)
-            {
                 return _currentPage - 1;
-            }
         }
         return -1;
     }
@@ -195,9 +193,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 10) > 0)
+            checked
             {
-                return _currentPage - 10;
+                if (_pageStart > 0 && (_currentPage - 10) > 0)
+                    return _currentPage - 10;
             }
         }
         return -1;
@@ -207,9 +206,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 20) > 0)
+            checked
             {
-                return _currentPage - 20;
+                if (_pageStart > 0 && (_currentPage - 20) > 0)
+                    return _currentPage - 20;
             }
         }
         return -1;
@@ -219,9 +219,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 50) > 0)
+            checked
             {
-                return _currentPage - 50;
+                if (_pageStart > 0 && (_currentPage - 50) > 0)
+                    return _currentPage - 50;
             }
         }
         return -1;
@@ -231,9 +232,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && (_currentPage - 100) > 0)
+            checked
             {
-                return _currentPage - 100;
+                if (_pageStart > 0 && (_currentPage - 100) > 0)
+                    return _currentPage - 100;
             }
         }
         return -1;
@@ -325,9 +327,7 @@ public sealed class Paginator
             checked
             {
                 if ((_pageStart + _pageLimit) < _resultsCount)
-                {
                     return _currentPage + 1;
-                }
             }
         }
         return -1;
@@ -337,9 +337,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && PageCount >= (_currentPage + 10))
+            checked
             {
-                return _currentPage + 10;
+                if (_pageStart > 0 && PageCount >= (_currentPage + 10))
+                    return _currentPage + 10;
             }
         }
         return -1;
@@ -349,9 +350,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && PageCount >= (_currentPage + 20))
+            checked
             {
-                return _currentPage + 20;
+                if (_pageStart > 0 && PageCount >= (_currentPage + 20))
+                    return _currentPage + 20;
             }
         }
         return -1;
@@ -361,9 +363,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && PageCount >= (_currentPage + 50))
+            checked
             {
-                return _currentPage + 50;
+                if (_pageStart > 0 && PageCount >= (_currentPage + 50))
+                    return _currentPage + 50;
             }
         }
         return -1;
@@ -373,9 +376,10 @@ public sealed class Paginator
     {
         if (PageCount > 1)
         {
-            if (_pageStart > 0 && PageCount >= (_currentPage + 100))
+            checked
             {
-                return _currentPage + 100;
+                if (_pageStart > 0 && PageCount >= (_currentPage + 100))
+                    return _currentPage + 100;
             }
         }
         return -1;
@@ -403,9 +407,7 @@ public sealed class Paginator
         {
             var next = _pageStart + _pageLimit;
             if (next < _resultsCount)
-            {
                 return next;
-            }
         }
         return _resultsCount;
     }

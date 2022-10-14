@@ -3,14 +3,14 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>1.0.12.0</Version>
+		<Version>1.0.13.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Ryan A. Kueter</Authors>
 		<Company>Ryan A. Kueter</Company>
-		<Description>Quick Paginator is a free .NET library that provides a simple way to paginate a list of items.</Description>
+		<Description>Quick Paginator is a free .NET library that provides a simple and robust way to paginate a list of items.</Description>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<AssemblyVersion>1.0.12.0</AssemblyVersion>
-		<FileVersion>1.0.12.0</FileVersion>
+		<AssemblyVersion>1.0.13.0</AssemblyVersion>
+		<FileVersion>1.0.13.0</FileVersion>
 		<Copyright>Ryan A. Kueter</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Git</RepositoryType>
@@ -20,7 +20,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<Title>QuickPaginator</Title>
 		<PackageProjectUrl>https://github.com/ryankueter/QuickPaginator</PackageProjectUrl>
-		<PackageReleaseNotes>Fixed the PreviousTen, PreviousTwenty, and PreviousHundred calculations so that they land on page 1 instead of page 0.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added some additional checked statements for overflow-checking for arithmetic operations.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
