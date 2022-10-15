@@ -339,7 +339,7 @@ public sealed class Paginator
         {
             checked
             {
-                if (_pageStart > 0 && PageCount >= (_currentPage + 10))
+                if (PageCount >= (_currentPage + 10))
                     return _currentPage + 10;
             }
         }
@@ -352,7 +352,7 @@ public sealed class Paginator
         {
             checked
             {
-                if (_pageStart > 0 && PageCount >= (_currentPage + 20))
+                if (PageCount >= (_currentPage + 20))
                     return _currentPage + 20;
             }
         }
@@ -365,7 +365,7 @@ public sealed class Paginator
         {
             checked
             {
-                if (_pageStart > 0 && PageCount >= (_currentPage + 50))
+                if (PageCount >= (_currentPage + 50))
                     return _currentPage + 50;
             }
         }
@@ -378,7 +378,7 @@ public sealed class Paginator
         {
             checked
             {
-                if (_pageStart > 0 && PageCount >= (_currentPage + 100))
+                if (PageCount >= (_currentPage + 100))
                     return _currentPage + 100;
             }
         }
