@@ -270,7 +270,7 @@ public sealed class Paginator
 
                 // See if the page is close to th ending
                 // and reset the values if they are
-                if (End >= PageCount)
+                if (End >= PageCount && Start is not 1)
                 {
                     if (ButtonCount % 2 == 0)
                         Start = PageCount - ButtonCount + 1;
