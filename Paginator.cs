@@ -43,7 +43,7 @@ public sealed class Paginator
 	///     <li class=page-item @b.Value><a class=page-link href=/Admin/Users/@b.Key>@b.Key</a></li>
 	/// }
     /// </summary>
-    public readonly Dictionary<int, string> AllPages = new();
+    public Dictionary<int, string> AllPages { get { return GetAllPages(); } }
 
     /// <summary>
     /// Example:
@@ -127,7 +127,6 @@ public sealed class Paginator
         PreviousFifty = GetPreviousFifty();
         PreviousHundred = GetPreviousHundred();
         BetweenPages = GetBetweenPages(ButtonCount);
-        AllPages = GetAllPages();
         Next = GetNext();
         NextTen = GetNextTen();
         NextTwenty = GetNextTwenty();
@@ -244,56 +243,52 @@ public sealed class Paginator
     private Dictionary<int, string> GetBetweenPages(int ButtonCount)
     {
         Dictionary<int, string> result = new();
-        if (ButtonCount < 1)
-            return result;
-
-        if (PageCount > 1)
+        if (PageCount > 1 && ButtonCount >= 1)
         {
             checked
             {
-                // Calculate the number of buttons
-                double count = (double)ButtonCount / 2;
-                int n = (int)Math.Ceiling(count);
-                int c = ButtonCount;
+                // Give or take
+                int mod = ButtonCount / 2;
 
-                for (var page = 0; page < n; page++)
+                // Calculate start
+                int Start;
+                if (ButtonCount % 2 == 0)
+                    Start = _currentPage - mod + 1;
+                else
+                    Start = _currentPage - mod;
+
+                // Calculate end
+                int End = _currentPage + mod;
+
+                // See if the page is close to the begining
+                // and reset the values if they are
+                if (Start <= 0)
                 {
-                    // Calculate the first part of the buttons
-                    if (_currentPage == page)
-                    {
-                        n = c;
-                        break;
-                    }
-
-                    // Calculate the last part of the buttons
-                    if (_currentPage == PageCount - page)
-                    {
-                        n = c;
-                        break;
-                    }
-                    c--;
+                    Start = 1;
+                    End = ButtonCount;
                 }
 
-                // Add the buttons to the array
-                var i = 1;
-                for (var x = 0; x < _resultsCount; x = x + _pageLimit)
+                // See if the page is close to th ending
+                // and reset the values if they are
+                if (End >= PageCount)
                 {
-                    bool IsTrue = false;
                     if (ButtonCount % 2 == 0)
-                        IsTrue = (x > (_pageStart - (n * _pageLimit)) && (x <= (_pageStart + (n * _pageLimit))));
+                        Start = PageCount - ButtonCount + 1;
                     else
-                        IsTrue = (x > (_pageStart - (n * _pageLimit)) && (x < (_pageStart + (n * _pageLimit))));
+                        Start = PageCount - ButtonCount;
 
-                    if (IsTrue)
+                    End = PageCount;
+                }
+
+                // Iterate only the pages that need to be added
+                for (var x = Start; x <= End; x++)
+                {
+                    var active = String.Empty;
+                    if (_currentPage == x)
                     {
-                        var active = String.Empty;
-                        if (_pageStart == x)
-                        {
-                            active = "active";
-                        }
-                        result.Add(i, active);
+                        active = "active";
                     }
-                    i++;
+                    result.Add(x, active);
                 }
             }
         }
@@ -305,16 +300,12 @@ public sealed class Paginator
         Dictionary<int, string> result = new();
         if (PageCount > 1)
         {
-            var i = 1;
-            for (var x = 0; x < _resultsCount; x = x + _pageLimit)
+            for (var x = 1; x <= PageCount; x++)
             {
-                var active = String.Empty;
-                if (_pageStart == x)
-                {
-                    active = "active";
-                }
-                result.Add(i, active);
-                i++;
+                if (_currentPage == x)
+                    result.Add(x, "active");
+                else
+                    result.Add(x, String.Empty);
             }
         }
         return result;

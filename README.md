@@ -10,6 +10,12 @@ Updated: October, 2022
 ### Targets:
 - .NET 6
 
+### Features
+- Create a simple or complex paginator using the buttons of your choice.
+- Change the maximum number of buttons displayed, the default is seven.
+- Easily work with Linq's Skip and Take functionality.
+- List all buttons for any pagination scenario.
+
 ## Properties
 
 The QuickPaginator provides a number of properties that contain calculated values for each page.
