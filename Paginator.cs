@@ -261,22 +261,19 @@ public sealed class Paginator
                 int End = _currentPage + mod;
 
                 // See if the page is close to the begining
-                // and reset the values if they are
                 if (Start <= 0)
                 {
                     Start = 1;
-                    End = ButtonCount;
+                    if (PageCount >= ButtonCount)
+                        End = ButtonCount;
+                    else
+                        End = PageCount;
                 }
 
-                // See if the page is close to th ending
-                // and reset the values if they are
+                // See if the page is close to the ending
                 if (End >= PageCount && Start is not 1)
                 {
-                    if (ButtonCount % 2 == 0)
-                        Start = PageCount - ButtonCount + 1;
-                    else
-                        Start = PageCount - ButtonCount;
-
+                    Start = PageCount - ButtonCount + 1;
                     End = PageCount;
                 }
 
