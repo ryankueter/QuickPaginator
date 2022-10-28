@@ -24,12 +24,12 @@ public sealed class Paginator
     /// <a class=page-link href=/Admin/Users/@pager.Previous>Previous</a>
     /// </summary>
     public int Previous => GetPrevious();
-    public int PreviousTen => GetPreviousTen();
-    public int PreviousTwenty => GetPreviousTwenty();
-    public int PreviousThirty => GetPreviousThirty();
-    public int PreviousFourty => GetPreviousFourty();
-    public int PreviousFifty => GetPreviousFifty();
-    public int PreviousHundred => GetPreviousHundred();
+    public int PreviousTen => GetPrevious(10);
+    public int PreviousTwenty => GetPrevious(20);
+    public int PreviousThirty => GetPrevious(30);
+    public int PreviousFourty => GetPrevious(40);
+    public int PreviousFifty => GetPrevious(50);
+    public int PreviousHundred => GetPrevious(100);
 
     /// <summary>
     /// Example:
@@ -54,12 +54,12 @@ public sealed class Paginator
     /// <a class=page-link href=/Admin/Users/@pager.Next>Next</a>
     /// </summary>
     public int Next => GetNext();
-    public int NextTen => GetNextTen();
-    public int NextTwenty => GetNextTwenty();
-    public int NextThirty => GetNextThirty();
-    public int NextFourty => GetNextFourty();
-    public int NextFifty => GetNextFifty();
-    public int NextHundred => GetNextHundred();
+    public int NextTen => GetNext(10);
+    public int NextTwenty => GetNext(20);
+    public int NextThirty => GetNext(30);
+    public int NextFourty => GetNext(40);
+    public int NextFifty => GetNext(50);
+    public int NextHundred => GetNext(100);
 
     /// <summary>
     /// Last Page
@@ -179,79 +179,14 @@ public sealed class Paginator
         return -1;
     }
 
-    private int GetPreviousTen()
+    public int GetPrevious(int count)
     {
         if (_pageCount > 1)
         {
             checked
             {
-                if (_pageStart > 0 && (_currentPage - 10) > 0)
-                    return _currentPage - 10;
-            }
-        }
-        return -1;
-    }
-
-    private int GetPreviousTwenty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageStart > 0 && (_currentPage - 20) > 0)
-                    return _currentPage - 20;
-            }
-        }
-        return -1;
-    }
-
-    private int GetPreviousThirty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageStart > 0 && (_currentPage - 30) > 0)
-                    return _currentPage - 30;
-            }
-        }
-        return -1;
-    }
-
-    private int GetPreviousFourty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageStart > 0 && (_currentPage - 40) > 0)
-                    return _currentPage - 40;
-            }
-        }
-        return -1;
-    }
-
-    private int GetPreviousFifty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageStart > 0 && (_currentPage - 50) > 0)
-                    return _currentPage - 50;
-            }
-        }
-        return -1;
-    }
-
-    private int GetPreviousHundred()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageStart > 0 && (_currentPage - 100) > 0)
-                    return _currentPage - 100;
+                if (_pageStart > 0 && (_currentPage - count) > 0)
+                    return _currentPage - count;
             }
         }
         return -1;
@@ -338,79 +273,14 @@ public sealed class Paginator
         return -1;
     }
 
-    private int GetNextTen()
+    public int GetNext(int count)
     {
         if (_pageCount > 1)
         {
             checked
             {
-                if (_pageCount >= (_currentPage + 10))
-                    return _currentPage + 10;
-            }
-        }
-        return -1;
-    }
-
-    private int GetNextTwenty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageCount >= (_currentPage + 20))
-                    return _currentPage + 20;
-            }
-        }
-        return -1;
-    }
-
-    private int GetNextThirty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageCount >= (_currentPage + 30))
-                    return _currentPage + 30;
-            }
-        }
-        return -1;
-    }
-
-    private int GetNextFourty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageCount >= (_currentPage + 40))
-                    return _currentPage + 40;
-            }
-        }
-        return -1;
-    }
-
-    private int GetNextFifty()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageCount >= (_currentPage + 50))
-                    return _currentPage + 50;
-            }
-        }
-        return -1;
-    }
-
-    private int GetNextHundred()
-    {
-        if (_pageCount > 1)
-        {
-            checked
-            {
-                if (_pageCount >= (_currentPage + 100))
-                    return _currentPage + 100;
+                if (_pageCount >= (_currentPage + count))
+                    return _currentPage + count;
             }
         }
         return -1;

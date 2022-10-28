@@ -75,6 +75,7 @@ Pager.PreviousThirty
 Pager.PreviousFourty
 Pager.PreviousFifty
 Pager.PreviousHundred
+Pager.GetNext(120) // a custom previous button
 
 Pager.NextTen
 Pager.NextTwenty
@@ -82,6 +83,7 @@ Pager.NextThirty
 Pager.NextFourty
 Pager.NextFifty
 Pager.NextHundred
+Pager.GetPrevious(120) // a custom next button
 ```
 
 ### Current Count & Total Count
