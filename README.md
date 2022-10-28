@@ -71,11 +71,15 @@ Pager.Next
 // Additionally:
 Pager.PreviousTen
 Pager.PreviousTwenty
+Pager.PreviousThirty
+Pager.PreviousFourty
 Pager.PreviousFifty
 Pager.PreviousHundred
 
 Pager.NextTen
 Pager.NextTwenty
+Pager.NextThirty
+Pager.NextFourty
 Pager.NextFifty
 Pager.NextHundred
 ```
