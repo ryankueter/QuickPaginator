@@ -9,23 +9,27 @@ public sealed class Paginator
     private readonly int _pageLimit;
     private readonly int _resultsCount;
     private readonly int _currentPage;
+    private readonly int _buttonCount;
+    private readonly int _pageCount;
 
     /// <summary>
     /// First Page
     /// Example:
     /// <a class=page-link href=/Admin/Users/@pager.First>First</a>
     /// </summary>
-    public readonly int First;
+    public int First => GetFirst();
 
     /// <summary>
     /// Example:
     /// <a class=page-link href=/Admin/Users/@pager.Previous>Previous</a>
     /// </summary>
-    public readonly int Previous;
-    public readonly int PreviousTen;
-    public readonly int PreviousTwenty;
-    public readonly int PreviousFifty;
-    public readonly int PreviousHundred;
+    public int Previous => GetPrevious();
+    public int PreviousTen => GetPreviousTen();
+    public int PreviousTwenty => GetPreviousTwenty();
+    public int PreviousThirty => GetPreviousThirty();
+    public int PreviousFourty => GetPreviousFourty();
+    public int PreviousFifty => GetPreviousFifty();
+    public int PreviousHundred => GetPreviousHundred();
 
     /// <summary>
     /// Example:
@@ -34,7 +38,7 @@ public sealed class Paginator
 	///     <li class=page-item @b.Value><a class=page-link href=/Admin/Users/@b.Key>@b.Key</a></li>
 	/// }
     /// </summary>
-    public readonly Dictionary<int, string> BetweenPages = new();
+    public Dictionary<int, string> BetweenPages => GetBetweenPages(_buttonCount);
 
     /// <summary>
     /// Example:
@@ -43,24 +47,26 @@ public sealed class Paginator
 	///     <li class=page-item @b.Value><a class=page-link href=/Admin/Users/@b.Key>@b.Key</a></li>
 	/// }
     /// </summary>
-    public Dictionary<int, string> AllPages { get { return GetAllPages(); } }
+    public Dictionary<int, string> AllPages => GetAllPages();
 
     /// <summary>
     /// Example:
     /// <a class=page-link href=/Admin/Users/@pager.Next>Next</a>
     /// </summary>
-    public readonly int Next;
-    public readonly int NextTen;
-    public readonly int NextTwenty;
-    public readonly int NextFifty;
-    public readonly int NextHundred;
+    public int Next => GetNext();
+    public int NextTen => GetNextTen();
+    public int NextTwenty => GetNextTwenty();
+    public int NextThirty => GetNextThirty();
+    public int NextFourty => GetNextFourty();
+    public int NextFifty => GetNextFifty();
+    public int NextHundred => GetNextHundred();
 
     /// <summary>
     /// Last Page
     /// Example:
     /// <a class=page-link href=/Admin/Users/@pager.Last>Last</a>
     /// </summary>
-    public readonly int Last;
+    public int Last => GetLast();
 
     /// <summary>
     /// The page count
@@ -69,33 +75,33 @@ public sealed class Paginator
 	/// {
 	/// }
     /// </summary>
-    public readonly int PageCount;
+    public int PageCount => _pageCount;
 
     /// <summary>
     /// Example:
     /// response.Users.Where(user => user.IsDisabled == false).Skip(pager.Skip).Take(pager.Take).ToList();
     /// </summary>
-    public readonly int Take;
+    public int Take => GetTake();
 
     /// <summary>
     /// Example:
     /// response.Users.Where(user => user.IsDisabled == false).Skip(pager.Skip).Take(pager.Take).ToList();
     /// </summary>
-    public readonly int Skip;
+    public int Skip => GetSkip();
 
     /// <summary>
     /// Example:
     /// (2 of 20 results)
     /// (pager.CurrentCount of pager.TotalCount results)
     /// </summary>
-    public readonly int CurrentCount;
+    public int CurrentCount => GetCurrentCount();
 
     /// <summary>
     /// Example:
     /// (2 of 20 results)
     /// (pager.CurrentCount of pager.TotalCount results)
     /// </summary>
-    public readonly int TotalCount;   
+    public int TotalCount => GetTotalCount();
 
     /// <summary>
     /// Initializes the pager.
@@ -114,38 +120,23 @@ public sealed class Paginator
         _resultsCount = ResultsCount;
         _pageLimit = PageLimit;
         _pageStart = GetPageStart();
-        PageCount = GetPageCount();
+        _buttonCount = ButtonCount;
+        _pageCount = GetPageCount();
 
-        if (CurrentPage > PageCount)
-            throw new ArgumentOutOfRangeException($"The current page '{CurrentPage}' is greater than the page count '{PageCount}.'");
-
-        // Get the page numbers
-        First = GetFirst();
-        Previous = GetPrevious();
-        PreviousTen = GetPreviousTen();
-        PreviousTwenty = GetPreviousTwenty();
-        PreviousFifty = GetPreviousFifty();
-        PreviousHundred = GetPreviousHundred();
-        BetweenPages = GetBetweenPages(ButtonCount);
-        Next = GetNext();
-        NextTen = GetNextTen();
-        NextTwenty = GetNextTwenty();
-        NextFifty = GetNextFifty();
-        NextHundred = GetNextHundred();
-        Last = GetLast();
-
-        Take = GetTake();
-        Skip = GetSkip();
-        CurrentCount = GetCurrentCount();
-        TotalCount = GetTotalCount();
+        // Make sure the current page isn't greater than the page count
+        if (_currentPage > _pageCount)
+            throw new ArgumentOutOfRangeException($"The current page '{_currentPage}' is greater than the page count '{_pageCount}.'");
     }
 
+    /// <summary>
+    /// Add a default constructor with some defaults,
+    /// only used for initialization
+    /// </summary>
     public Paginator()
     {
         _currentPage = 1;
         _resultsCount = 0;
         _pageLimit = 10;
-        BetweenPages = new();
     }
 
     private int GetCurrentPage(int? CurrentPage)
@@ -180,7 +171,7 @@ public sealed class Paginator
 
     private int GetPrevious()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             if (_pageStart > 0)
                 return _currentPage - 1;
@@ -190,7 +181,7 @@ public sealed class Paginator
 
     private int GetPreviousTen()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
@@ -203,7 +194,7 @@ public sealed class Paginator
 
     private int GetPreviousTwenty()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
@@ -214,9 +205,35 @@ public sealed class Paginator
         return -1;
     }
 
+    private int GetPreviousThirty()
+    {
+        if (_pageCount > 1)
+        {
+            checked
+            {
+                if (_pageStart > 0 && (_currentPage - 30) > 0)
+                    return _currentPage - 30;
+            }
+        }
+        return -1;
+    }
+
+    private int GetPreviousFourty()
+    {
+        if (_pageCount > 1)
+        {
+            checked
+            {
+                if (_pageStart > 0 && (_currentPage - 40) > 0)
+                    return _currentPage - 40;
+            }
+        }
+        return -1;
+    }
+
     private int GetPreviousFifty()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
@@ -229,7 +246,7 @@ public sealed class Paginator
 
     private int GetPreviousHundred()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
@@ -243,7 +260,7 @@ public sealed class Paginator
     private Dictionary<int, string> GetBetweenPages(int ButtonCount)
     {
         Dictionary<int, string> result = new();
-        if (PageCount > 1 && ButtonCount >= 1)
+        if (_pageCount > 1 && ButtonCount >= 1)
         {
             checked
             {
@@ -264,17 +281,17 @@ public sealed class Paginator
                 if (Start <= 0)
                 {
                     Start = 1;
-                    if (PageCount >= ButtonCount)
+                    if (_pageCount >= ButtonCount)
                         End = ButtonCount;
                     else
-                        End = PageCount;
+                        End = _pageCount;
                 }
 
                 // See if the page is close to the ending
-                if (End >= PageCount && Start is not 1)
+                if (End >= _pageCount && Start is not 1)
                 {
-                    Start = PageCount - ButtonCount + 1;
-                    End = PageCount;
+                    Start = _pageCount - ButtonCount + 1;
+                    End = _pageCount;
                 }
 
                 // Iterate only the pages that need to be added
@@ -295,9 +312,9 @@ public sealed class Paginator
     private Dictionary<int, string> GetAllPages()
     {
         Dictionary<int, string> result = new();
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
-            for (var x = 1; x <= PageCount; x++)
+            for (var x = 1; x <= _pageCount; x++)
             {
                 if (_currentPage == x)
                     result.Add(x, "active");
@@ -310,7 +327,7 @@ public sealed class Paginator
 
     private int GetNext()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
@@ -323,11 +340,11 @@ public sealed class Paginator
 
     private int GetNextTen()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
-                if (PageCount >= (_currentPage + 10))
+                if (_pageCount >= (_currentPage + 10))
                     return _currentPage + 10;
             }
         }
@@ -336,12 +353,38 @@ public sealed class Paginator
 
     private int GetNextTwenty()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
-                if (PageCount >= (_currentPage + 20))
+                if (_pageCount >= (_currentPage + 20))
                     return _currentPage + 20;
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextThirty()
+    {
+        if (_pageCount > 1)
+        {
+            checked
+            {
+                if (_pageCount >= (_currentPage + 30))
+                    return _currentPage + 30;
+            }
+        }
+        return -1;
+    }
+
+    private int GetNextFourty()
+    {
+        if (_pageCount > 1)
+        {
+            checked
+            {
+                if (_pageCount >= (_currentPage + 40))
+                    return _currentPage + 40;
             }
         }
         return -1;
@@ -349,11 +392,11 @@ public sealed class Paginator
 
     private int GetNextFifty()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
-                if (PageCount >= (_currentPage + 50))
+                if (_pageCount >= (_currentPage + 50))
                     return _currentPage + 50;
             }
         }
@@ -362,11 +405,11 @@ public sealed class Paginator
 
     private int GetNextHundred()
     {
-        if (PageCount > 1)
+        if (_pageCount > 1)
         {
             checked
             {
-                if (PageCount >= (_currentPage + 100))
+                if (_pageCount >= (_currentPage + 100))
                     return _currentPage + 100;
             }
         }
@@ -412,6 +455,6 @@ public sealed class Paginator
 
     private int GetLast()
     {
-        return PageCount;
+        return _pageCount;
     }
 }
