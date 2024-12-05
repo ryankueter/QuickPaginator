@@ -288,11 +288,7 @@ public sealed class Paginator
         return -1;
     }
 
-    private int GetTake()
-    {
-        return _pageLimit;
-    }
-
+    private int GetTake() => _pageLimit;
     private int GetSkip()
     {
         int skip = 0;
@@ -315,18 +311,7 @@ public sealed class Paginator
         return _resultsCount;
     }
 
-    private int GetTotalCount()
-    {
-        return _resultsCount;
-    }
-
-    private int GetFirst()
-    {
-        return 1;
-    }
-
-    private int GetLast()
-    {
-        return _pageCount;
-    }
+    private int GetTotalCount() => _resultsCount;
+    private int GetFirst() => 1;
+    private int GetLast() => _pageCount;
 }
