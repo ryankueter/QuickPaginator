@@ -167,7 +167,7 @@ public sealed class Paginator
         checked
         {
             double count = (double)_resultsCount / _pageLimit;
-            return (int)Math.Ceiling(count);
+            return (int)Math.Floor(count);
         }
     }
 
@@ -234,7 +234,7 @@ public sealed class Paginator
                 // Iterate only the pages that need to be added
                 for (var x = Start; x <= End; x++)
                 {
-                    var active = String.Empty;
+                    var active = string.Empty;
                     if (_currentPage == x)
                     {
                         active = "active";
@@ -256,7 +256,7 @@ public sealed class Paginator
                 if (_currentPage == x)
                     result.Add(x, "active");
                 else
-                    result.Add(x, String.Empty);
+                    result.Add(x, string.Empty);
             }
         }
         return result;
