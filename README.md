@@ -1,7 +1,7 @@
 # Quick Paginator (.NET)
 
 Author: Ryan Kueter  
-Updated: December, 2024
+Updated: March, 2025
 
 ## About
 
