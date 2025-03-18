@@ -117,7 +117,13 @@ public sealed class Paginator
         // Make certain the numbers are positive
         if (CurrentPage < 0 || ResultsCount < 0 || PageLimit < 0 || ButtonCount < 0)
         {
-            throw new ArgumentOutOfRangeException();
+            _currentPage = 0;
+            _resultsCount = 0;
+            _pageLimit = 0;
+            _pageStart = 0;
+            _buttonCount = 0;
+            _pageCount = 0;
+            return;
         }
 
         // Make some initial calcluations
@@ -179,13 +185,7 @@ public sealed class Paginator
             return 0;
         }
 
-        // This is the first page
-        if (_resultsCount < _pageLimit)
-        {
-            return 1;
-        }
-
-        return _resultsCount / _pageLimit;
+        return (_resultsCount + _pageLimit - 1) / _pageLimit;
     }
 
     private int GetPrevious()
