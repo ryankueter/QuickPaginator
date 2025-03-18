@@ -115,7 +115,7 @@ public sealed class Paginator
     public Paginator(int? CurrentPage, int ResultsCount, int PageLimit = 10, int ButtonCount = 7)
     {
         // Make certain the numbers are positive
-        if (CurrentPage <= 0 || ResultsCount < 0 || PageLimit <= 0 || ButtonCount < 1)
+        if (CurrentPage < 0 || ResultsCount < 0 || PageLimit < 0 || ButtonCount < 0)
         {
             throw new ArgumentOutOfRangeException();
         }
