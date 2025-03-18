@@ -78,6 +78,7 @@ public sealed class Paginator
 	/// }
     /// </summary>
     public int PageCount => _pageCount;
+    public int CurrentPage => _currentPage;
 
     /// <summary>
     /// Example:

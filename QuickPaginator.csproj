@@ -10,9 +10,9 @@
 		<Copyright>Ryan A. Kueter</Copyright>
 		<Description>Quick Paginator is a free .NET library that provides a simple and robust way to paginate a list of items.</Description>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Version>1.0.24.0</Version>
-		<AssemblyVersion>1.0.24.0</AssemblyVersion>
-		<FileVersion>1.0.24.0</FileVersion>
+		<Version>1.0.25.0</Version>
+		<AssemblyVersion>1.0.25.0</AssemblyVersion>
+		<FileVersion>1.0.25.0</FileVersion>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Git</RepositoryType>
 		<RepositoryUrl>https://github.com/ryankueter/QuickPaginator</RepositoryUrl>
@@ -21,7 +21,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<Title>QuickPaginator</Title>
 		<PackageProjectUrl>https://github.com/ryankueter/QuickPaginator</PackageProjectUrl>
-		<PackageReleaseNotes>Minor bug fix.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added a current page method.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
