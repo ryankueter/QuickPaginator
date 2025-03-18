@@ -175,11 +175,10 @@ public sealed class Paginator
             return 0;
         }
 
-        checked
-        {
-            double count = (double)_resultsCount / _pageLimit;
-            return (int)Math.Floor(count);
-        }
+        int fullPages = _resultsCount / _pageLimit;
+        int remainder = _resultsCount % _pageLimit;
+
+        return fullPages + (remainder > 0 ? 1 : 0);
     }
 
     private int GetPrevious()
