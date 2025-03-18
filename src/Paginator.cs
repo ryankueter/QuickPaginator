@@ -170,15 +170,12 @@ public sealed class Paginator
 
     private int GetPageCount()
     {
-        if (_resultsCount <= 0)
+        if (_resultsCount <= 0 || _pageLimit <= 0)
         {
             return 0;
         }
 
-        int fullPages = _resultsCount / _pageLimit;
-        int remainder = _resultsCount % _pageLimit;
-
-        return fullPages + (remainder > 0 ? 1 : 0);
+        return _resultsCount / _pageLimit;
     }
 
     private int GetPrevious()
