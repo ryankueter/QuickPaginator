@@ -115,7 +115,9 @@ public sealed class Paginator
     {
         // Make certain the numbers are positive
         if (CurrentPage <= 0 || ResultsCount < 0 || PageLimit <= 0 || ButtonCount < 1)
+        {
             throw new ArgumentOutOfRangeException();
+        }
 
         // Make some initial calcluations
         _currentPage = GetCurrentPage(CurrentPage);
@@ -127,7 +129,9 @@ public sealed class Paginator
 
         // Make sure the current page isn't greater than the page count
         if (_currentPage > _pageCount)
+        {
             throw new ArgumentOutOfRangeException($"The current page '{_currentPage}' is greater than the page count '{_pageCount}.'");
+        }
     }
 
     /// <summary>
@@ -144,7 +148,9 @@ public sealed class Paginator
     private int GetCurrentPage(int? CurrentPage)
     {
         if (CurrentPage is not null && CurrentPage > 0)
+        {
             return (int)CurrentPage;
+        }
 
         return 1;
     }
@@ -154,7 +160,9 @@ public sealed class Paginator
         checked
         {
             if (_currentPage > 0)
+            {
                 return (_currentPage * _pageLimit) - _pageLimit;
+            }
         }
         return 0;
     }
@@ -162,7 +170,9 @@ public sealed class Paginator
     private int GetPageCount()
     {
         if (_resultsCount <= 0)
+        {
             return 0;
+        }
 
         checked
         {
@@ -176,7 +186,9 @@ public sealed class Paginator
         if (_pageCount > 1)
         {
             if (_pageStart > 0)
+            {
                 return _currentPage - 1;
+            }
         }
         return -1;
     }
@@ -188,7 +200,9 @@ public sealed class Paginator
             checked
             {
                 if (_pageStart > 0 && (_currentPage - count) > 0)
+                {
                     return _currentPage - count;
+                }
             }
         }
         return -1;
@@ -207,9 +221,13 @@ public sealed class Paginator
                 // Calculate start
                 int Start;
                 if (ButtonCount % 2 == 0)
+                {
                     Start = _currentPage - mod + 1;
+                }
                 else
+                {
                     Start = _currentPage - mod;
+                }
 
                 // Calculate end
                 int End = _currentPage + mod;
@@ -219,9 +237,13 @@ public sealed class Paginator
                 {
                     Start = 1;
                     if (_pageCount >= ButtonCount)
+                    {
                         End = ButtonCount;
+                    }
                     else
+                    {
                         End = _pageCount;
+                    }   
                 }
 
                 // See if the page is close to the ending
@@ -254,9 +276,13 @@ public sealed class Paginator
             for (var x = 1; x <= _pageCount; x++)
             {
                 if (_currentPage == x)
+                {
                     result.Add(x, "active");
+                }
                 else
+                {
                     result.Add(x, string.Empty);
+                }
             }
         }
         return result;
@@ -268,8 +294,10 @@ public sealed class Paginator
         {
             checked
             {
-                if ((_pageStart + _pageLimit) < _resultsCount)
+                if (_pageCount >= (_currentPage + 1))
+                {
                     return _currentPage + 1;
+                }
             }
         }
         return -1;
@@ -282,7 +310,9 @@ public sealed class Paginator
             checked
             {
                 if (_pageCount >= (_currentPage + count))
+                {
                     return _currentPage + count;
+                }
             }
         }
         return -1;
@@ -295,7 +325,9 @@ public sealed class Paginator
         checked
         {
             if (_currentPage > 1)
+            {
                 skip = (_currentPage - 1) * _pageLimit;
+            }
         }
         return skip;
     }
@@ -306,7 +338,9 @@ public sealed class Paginator
         {
             var next = _pageStart + _pageLimit;
             if (next < _resultsCount)
+            {
                 return next;
+            }
         }
         return _resultsCount;
     }
