@@ -179,6 +179,12 @@ public sealed class Paginator
             return 0;
         }
 
+        // This is the first page
+        if (_resultsCount < _pageLimit)
+        {
+            return 1;
+        }
+
         return _resultsCount / _pageLimit;
     }
 
