@@ -220,6 +220,12 @@ public sealed class Paginator
         Dictionary<int, string> result = new();
         if (_pageCount > 1 && ButtonCount >= 1)
         {
+            // Check if the page count is less than the button count
+            if (_pageCount < ButtonCount)
+            {
+                ButtonCount = _pageCount;
+            }
+
             checked
             {
                 // Give or take
@@ -250,7 +256,7 @@ public sealed class Paginator
                     else
                     {
                         End = _pageCount;
-                    }   
+                    }
                 }
 
                 // See if the page is close to the ending
