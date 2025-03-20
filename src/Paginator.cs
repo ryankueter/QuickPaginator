@@ -135,13 +135,9 @@ public sealed class Paginator
         _pageCount = GetPageCount();
 
         // Make sure the current page isn't greater than the page count
-        if (_pageCount == 0)
+        if (_pageCount == 0 || _currentPage > _pageCount)
         {
             _currentPage = _pageCount;
-        }
-        if (_currentPage > _pageCount)
-        {
-            throw new ArgumentOutOfRangeException($"The current page '{_currentPage}' is greater than the page count '{_pageCount}.'");
         }
     }
 
