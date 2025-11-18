@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		
@@ -10,9 +10,9 @@
 		<Copyright>Ryan A. Kueter</Copyright>
 		<Description>Quick Paginator is a free .NET library that provides a simple and robust way to paginate a list of items.</Description>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Version>1.0.33.0</Version>
-		<AssemblyVersion>1.0.33.0</AssemblyVersion>
-		<FileVersion>1.0.33.0</FileVersion>
+		<Version>1.0.34.0</Version>
+		<AssemblyVersion>1.0.34.0</AssemblyVersion>
+		<FileVersion>1.0.34.0</FileVersion>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>Git</RepositoryType>
 		<RepositoryUrl>https://github.com/ryankueter/QuickPaginator</RepositoryUrl>

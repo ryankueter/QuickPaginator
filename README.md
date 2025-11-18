@@ -1,14 +1,14 @@
 # Quick Paginator (.NET)
 
 Author: Ryan Kueter  
-Updated: April, 2025
+Updated: November, 2025
 
 ## About
 
 **Quick Paginator** is a free .NET library, available from the [NuGet Package Manager](https://www.nuget.org/packages/QuickPaginator), that provides a quick way to paginate a list of items.  
 
 ### Targets:
-- .NET 6 - .NET 9
+- .NET 6 - .NET 10
 
 ### Features
 - Create a simple or complex paginator using the buttons of your choice.
